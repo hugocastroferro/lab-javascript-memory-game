@@ -41,27 +41,72 @@ window.addEventListener('load', (event) => {
   // Add all the divs to the HTML
   document.querySelector('#memory-board').innerHTML = html;
 
+  
   // Bind the click event of each element to a function
   document.querySelectorAll('.card').forEach((card) => {
     card.addEventListener('click', () => {
       // TODO: write some code here
       console.log(`Card clicked: ${card}`);
-      card.classList.toggle('turned')
+      // if(card.classList.contains('reserved')){
+      //  memoryGame.pickedCards.push(card);
+      // }
+      // else{
+      //   card.classList.toggle('turned');
+      // }
+
+      if(memoryGame.pickedCards.length < 2)
+      {
+        memoryGame.pickedCards.push(card);
+        card.classList.add('turned')
+      }
+      //const turnCards = document.querySelectorAll(".card.turned");
+      const turnCards = memoryGame.pickedCards;
+      if (turnCards.length === 2) {
+        const card1 = turnCards[0]
+        const card2 = turnCards[1]
+        const card1Name = card1.getAttribute('data-card-name')
+        const card2Name = card2.getAttribute('data-card-name')
+        const result = memoryGame.checkIfPair(card1Name, card2Name);
+        if (result) {
+          turnCards[0].classList.add("blocked");
+          turnCards[1].classList.add("blocked");
+          memoryGame.pickedCards = [];
+        } else {
+          setTimeout(() => {
+            turnCards[0].classList.toggle("turned");
+            turnCards[1].classList.toggle("turned");
+            memoryGame.pickedCards = [];
+          }, 1000);
+        }
+      } 
+     
+      
     });
   });
 });
 
 // check if the cards are flipped ?
-const turnCards = document.querySelectorAll('.card.turned')
-if (turnCards.length === 2){
+// const turnCards = document.querySelectorAll('.card.turned')
+// if (turnCards.length === 2){
 
-const result = checkIfPair(turnCards[0], turnCards[1])
-} 
+// const result = memoryGame.checkIfPair(turnCards[0], turnCards[1])
+// if(result)
+// {
+//   turnCards[0].classList.add('reserved');
+//   turnCards[1].classList.add('reserved');
+// }
+// else{
+//   setTimeout(()=>{
+//     turnCards[0].classList.toggle('turned');
+//     turnCards[1].classList.toggle('turned');
+//   },1000)
+// }
+// } 
 
 // check if the cards match ?
-if(memoryGame.checkIfPair(card1, card2)){
+// if(memoryGame.checkIfPair(card1, card2)){
 
-  turnCards.forEach((card) => card.classList.toggle('front'))
-} else {
-  turnCards.forEach((card) => card.classList.remove('turned'))
-}
+//   turnCards.forEach((card) => card.classList.toggle('front'))
+// } else {
+//   turnCards.forEach((card) => card.classList.remove('turned'))
+// }
